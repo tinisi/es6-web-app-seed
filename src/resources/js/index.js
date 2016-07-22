@@ -1,8 +1,6 @@
 
-// my library seems to be providing babel-polyfill
-// that doesn't seem quite right
-// need to publish a new version of the lib that does not
-// require('babel-polyfill');
+// since this is an app, it should be kosher to include this
+require('babel-polyfill');
 
 var uniqueNamespace = {};
 uniqueNamespace.App = require('./app.js').default;

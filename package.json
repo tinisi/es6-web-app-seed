@@ -2,11 +2,11 @@
   "name": "es6-app-seed",
   "version": "0.0.1",
   "description": "A simple seed project for getting babel ES6 and webpack set up for a web application.",
-  "main": "./dist/resources/js/index.js",
+  "main": "./dist/app.min.js",
   "scripts": {
     "test": "jasmine",
     "start": "node scripts/webpack-server.js",    
-    "build": "NODE_ENV=production webpack",
+    "build": "NODE_ENV=production webpack --output-file app.js",
     "repl": "babel-node --presets es2015"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "webpack-dev-server": "^1.13.1"
   },
   "dependencies": {
-    "es6-lib-seed": "git@github.com:tinisi/es6-lib-seed.git#v0.0.1-experimental"
+    "es6-lib-seed": "git@github.com:tinisi/es6-lib-seed.git#develop",
+    "babel-polyfill": "^6.9.1"
   }
 }

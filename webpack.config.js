@@ -3,7 +3,9 @@ var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
-module.exports = {
+var isProduction = (process.env.NODE_ENV === 'production');
+
+var webpackConfig = {
   entry: [
     'webpack-dev-server/client?http://localhost:5000',
     'webpack/hot/dev-server',
@@ -11,7 +13,7 @@ module.exports = {
   ],
   output: {
     path: __dirname + '/dist',
-    filename: 'app-bundle.js',
+    filename: 'app.js',
     publicPath: '/'
   },
   resolve: {
@@ -41,3 +43,28 @@ module.exports = {
     ]
   }
 };
+
+if ( isProduction ) {
+
+  webpackConfig.entry = [
+    'webpack-dev-server/client?http://localhost:5000',
+    'webpack/hot/dev-server',
+    './src/resources/js/index'
+  ];
+
+  webpackConfig.plugins.push(
+    new webpack.optimize.UglifyJsPlugin({
+      minimize: true,
+      include: /\.js$/,
+      compress: {
+        warnings: false,
+      },
+      output: {
+        comments: false,
+      }
+    })
+  );
+
+};
+
+module.exports = webpackConfig;
