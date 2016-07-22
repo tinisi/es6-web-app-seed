@@ -31,7 +31,7 @@
     "webpack-dev-server": "^1.13.1"
   },
   "dependencies": {
-    "es6-lib-seed": "git@github.com:tinisi/es6-lib-seed.git#develop",
+    "es6-lib-seed": "git@github.com:tinisi/es6-lib-seed.git#v0.0.2-experimental",
     "babel-polyfill": "^6.9.1"
   }
 }
