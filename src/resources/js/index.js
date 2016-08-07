@@ -1,5 +1,6 @@
 
 // since this is an app, it should be kosher to include this
+// even though it most defeinitely changes global vars
 require('babel-polyfill');
 
 var uniqueNamespace = {};

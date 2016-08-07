@@ -24,10 +24,11 @@ var webpackConfig = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
-            inject: 'head',
+            hot: true,
+            inject: 'false',
             hash: true,
             filename: 'index.html',
-            template: __dirname + '/src/index.html'
+            template: 'src/index.ejs'
         })
   ],
   module: {
@@ -39,8 +40,31 @@ var webpackConfig = {
           presets: ['es2015']
         },
         include: path.join(__dirname, 'src')
-      }
+      },
+      {
+        test: /\.html$/,
+        loader: "html-loader",
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.png$/,
+        loader: "url-loader",
+        query: { mimetype: "image/png" },
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test: /\.ejs$/,
+        loader: 'ejs-loader'
+      },
     ]
+  },
+  htmlLoader: {
+    ignoreCustomFragments: [/\{\{.*?}}/],
+    attrs: ['img:src', 'link:href']
+  },
+  devServer: {
+    inline: true,
+    hot: true
   }
 };
 

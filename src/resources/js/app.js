@@ -10,7 +10,7 @@ class App {
     this.goButton = document.createElement('button');
     this.textField = document.createElement('input');
     this.textField.type = 'text';
-    this.goButton.textContent = 'Do It!';
+    this.goButton.textContent = 'Do It';
     // render them
     this.root.appendChild(this.textField);
     this.root.appendChild(this.goButton);
