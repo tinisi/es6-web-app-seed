@@ -1,0 +1,12 @@
+
+:root {
+  --mainColor: red;
+}
+
+.awesome {
+  border-color: var(--mainColor);
+  border-style: solid;
+  border-width: 3px;
+  background: url(../img/example.svg);
+  height: 400px;
+}

@@ -3,8 +3,12 @@ import awesome from 'es6-lib-seed';
 class App {
 
   init() {
-    // get the root element
+    var bodyContents = require('../../partials/body.ejs')();
+    document.body.innerHTML = bodyContents;
+    // get the root element (this is in the templates we just loaded);
     this.root = document.querySelector('#app');
+    // get some css
+    require('../styles/app.css');
     // make some elements
     this.messageContainer = document.createElement('div');
     this.goButton = document.createElement('button');

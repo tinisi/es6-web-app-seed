@@ -2,6 +2,10 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var cssnext = require('postcss-cssnext');
+var CleanWebpackPlugin = require('clean-webpack-plugin');
+// TODO: figure this out (can't tell if it is working)
+// var cssnano = require('cssnano');
 
 var isProduction = (process.env.NODE_ENV === 'production');
 
@@ -12,7 +16,7 @@ var webpackConfig = {
     './src/resources/js/index'
   ],
   output: {
-    path: __dirname + '/dist',
+    path: path.join(__dirname, 'dist'),
     filename: 'app.js',
     publicPath: '/'
   },
@@ -23,13 +27,10 @@ var webpackConfig = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new HtmlWebpackPlugin({
-            hot: true,
-            inject: 'false',
-            hash: true,
-            filename: 'index.html',
-            template: 'src/index.ejs'
-        })
+    new HtmlWebpackPlugin(),
+    new CleanWebpackPlugin([__dirname + '/dist'], {
+      root: process.cwd()
+    })
   ],
   module: {
     loaders: [
@@ -42,40 +43,42 @@ var webpackConfig = {
         include: path.join(__dirname, 'src')
       },
       {
-        test: /\.html$/,
-        loader: "html-loader",
-        include: path.join(__dirname, 'src')
-      },
-      {
-        test: /\.png$/,
-        loader: "url-loader",
-        query: { mimetype: "image/png" },
-        include: path.join(__dirname, 'src')
+        loader: 'url?limit=10000&name=resources/img/[name].[hash].[ext]',
+        include: path.join(__dirname, 'src/resources/img')
       },
       {
         test: /\.ejs$/,
         loader: 'ejs-loader'
       },
+      {
+        test: /\.html$/,
+        loader: "html-loader",
+        include: path.join(__dirname, 'src')
+      },
+      {
+        test:   /\.css$/,
+        loaders: ['style-loader','css-loader','postcss-loader'],
+        include: path.join(__dirname, 'src/resources/styles')
+      }
     ]
-  },
-  htmlLoader: {
-    ignoreCustomFragments: [/\{\{.*?}}/],
-    attrs: ['img:src', 'link:href']
   },
   devServer: {
     inline: true,
-    hot: true
+    hot: true,
+    inject: 'body',
+    hash: true,
+    filename: 'index.html',
+    template: 'src/index.ejs',
+    outputPath: path.join(__dirname, 'dist')
+  },
+  postcss: function () {
+    return [cssnext];
   }
 };
 
 if ( isProduction ) {
 
-  webpackConfig.entry = [
-    'webpack-dev-server/client?http://localhost:5000',
-    'webpack/hot/dev-server',
-    './src/resources/js/index'
-  ];
-
+  // add the compression in prod mode only
   webpackConfig.plugins.push(
     new webpack.optimize.UglifyJsPlugin({
       minimize: true,
@@ -88,6 +91,11 @@ if ( isProduction ) {
       }
     })
   );
+
+  // TODO: figure this out (can't tell if it is working)
+  // webpackConfig.postcss = function () {
+  //   return [cssnano];
+  // }
 
 };
 
