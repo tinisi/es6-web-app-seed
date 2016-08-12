@@ -6,6 +6,8 @@ var config = require('../webpack.config');
 new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
+  inline: true,
+  inject: 'body',
   historyApiFallback: true,
   entry: 'app'
 }).listen(5000, 'localhost', function (err) {
