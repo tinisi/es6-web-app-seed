@@ -5,7 +5,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var cssnext = require('postcss-cssnext');
 var CleanWebpackPlugin = require('clean-webpack-plugin');
 // TODO: figure this out (can't tell if it is working)
-// var cssnano = require('cssnano');
+var cssnano = require('cssnano');
 
 var isProduction = (process.env.NODE_ENV === 'production');
 
@@ -17,7 +17,7 @@ var webpackConfig = {
   ],
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'app.js',
+    filename: 'app-[hash].js',
     publicPath: '/'
   },
   resolve: {
@@ -27,7 +27,15 @@ var webpackConfig = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
-    new HtmlWebpackPlugin(),
+    new HtmlWebpackPlugin({
+        inline: true,
+        hot: true,
+        inject: 'header',
+        // hash: true, // not needed when file name has [hash]
+        filename: 'index.html',
+        template: 'src/index.ejs',
+        outputPath: path.join(__dirname, 'dist')
+    }),
     new CleanWebpackPlugin([__dirname + '/dist'], {
       root: process.cwd()
     })
@@ -61,15 +69,6 @@ var webpackConfig = {
         include: path.join(__dirname, 'src/resources/styles')
       }
     ]
-  },
-  devServer: {
-    inline: true,
-    hot: true,
-    inject: 'body',
-    hash: true,
-    filename: 'index.html',
-    template: 'src/index.ejs',
-    outputPath: path.join(__dirname, 'dist')
   },
   postcss: function () {
     return [cssnext];

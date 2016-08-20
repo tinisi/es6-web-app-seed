@@ -7,7 +7,7 @@ new WebpackDevServer(webpack(config), {
   publicPath: config.output.publicPath,
   hot: true,
   inline: true,
-  inject: 'body',
+  inject: 'header',
   historyApiFallback: true,
   entry: 'app'
 }).listen(5000, 'localhost', function (err) {
