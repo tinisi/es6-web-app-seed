@@ -5,7 +5,7 @@
   "main": "./dist/app.min.js",
   "scripts": {
     "test": "jasmine",
-    "start": "node scripts/webpack-server.js",
+    "start": "webpack-dev-server --hot --inline --output-path=dist",
     "build": "NODE_ENV=production webpack",
     "repl": "babel-node --presets es2015"
   },

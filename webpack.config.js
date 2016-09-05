@@ -11,8 +11,6 @@ var isProduction = (process.env.NODE_ENV === 'production');
 
 var webpackConfig = {
   entry: [
-    'webpack-dev-server/client?http://localhost:5000',
-    'webpack/hot/dev-server',
     './src/resources/js/index'
   ],
   output: {
@@ -23,21 +21,18 @@ var webpackConfig = {
   resolve: {
     extensions: ['', '.js']
   },
-  devtool: 'eval-source-map',
+  devtool: 'sourcemap',
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
     new HtmlWebpackPlugin({
         inline: true,
         hot: true,
-        inject: 'header',
+        inject: 'head',
         // hash: true, // not needed when file name has [hash]
         filename: 'index.html',
         template: 'src/index.ejs',
         outputPath: path.join(__dirname, 'dist')
-    }),
-    new CleanWebpackPlugin([__dirname + '/dist'], {
-      root: process.cwd()
     })
   ],
   module: {
@@ -70,6 +65,12 @@ var webpackConfig = {
       }
     ]
   },
+  devServer: {
+    inject: 'head',
+    historyApiFallback: true,
+    entry: 'app',
+    port: 5000
+  },
   postcss: function () {
     return [cssnext];
   }
@@ -91,6 +92,12 @@ if ( isProduction ) {
     })
   );
 
+  // clean the dist...
+  webpackConfig.plugins.push(
+    new CleanWebpackPlugin([__dirname + '/dist'], {
+      root: process.cwd()
+    })
+  );
   // TODO: figure this out (can't tell if it is working)
   // webpackConfig.postcss = function () {
   //   return [cssnano];
